@@ -1,5 +1,23 @@
 *{
     margin:0;
     padding:0;
-    box-sizing:0;
+    box-sizing:border-box;
+}
+
+ /* dvh is more flexible than vh but does not work well in old  browsers*/ 
+body{
+    min-height: 100vh;
+    
+}
+
+@supports(height: 100svh){
+    body{
+        min-height: 100svh;
+    }
+}
+
+@supports(height:100dvh){
+    body{
+        min-height: 100dvh;
+    }
 }
