@@ -7,7 +7,7 @@
  /* dvh is more flexible than vh but does not work well in old  browsers*/ 
 body{
     min-height: 100vh;
-    
+    font-size: 14px;
 }
 
 @supports(height: 100svh){
@@ -20,4 +20,48 @@ body{
     body{
         min-height: 100dvh;
     }
+}
+
+header{
+background-color: #D3D3D3;
+display:flex;
+flex-direction: column;
+align-items: center;
+padding: 10px;    
+}
+
+p{
+    color:#E25822 ;
+
+}
+
+#nav-bar{
+    display: flex;
+    background-color:#E25822 ;
+    justify-content: space-around;
+}
+
+#nav-bar a{
+    margin-right: 10px;
+    padding: 5px;
+    text-decoration: none;
+    background-color: gold;
+    color:#391796;
+}
+
+#nav-bar a:hover{
+    cursor: pointer;
+    color:#aa25e7 ;
+}
+
+.conteneur{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.article_presentation{
+    border: 3px solid gold;
+    height: 100px;
+
 }
