@@ -57,7 +57,7 @@ $format_date= new DateTime();
    <div class="conteneur">
         <article class="article_presentation">
             <h1>Présentation du site</h1>
-            <p> Ce site sert à recuillier divers retour sur les projets pister sur ce githubs</p>
+            <p> Ce site sert à  recueillir divers retour sur les projets posté sur ce <a href="https://github.com/Josselin-Fauconnier">github</a></p>
         </article>
    </div>
 </main>

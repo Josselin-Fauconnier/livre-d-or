@@ -4,17 +4,13 @@
     box-sizing:border-box;
 }
 
- /* dvh is more flexible than vh but does not work well in old  browsers*/ 
 body{
     min-height: 100vh;
     font-size: 14px;
 }
 
-@supports(height: 100svh){
-    body{
-        min-height: 100svh;
-    }
-}
+
+ /* dvh is more flexible than vh but does not work well in old  browsers*/ 
 
 @supports(height:100dvh){
     body{
@@ -62,6 +58,18 @@ p{
 
 .article_presentation{
     border: 3px solid gold;
-    height: 100px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 12px 12px 2px 1px #aa25e7 ;
+}
 
+
+@media(max-width:600px) {
+    #nav-bar{
+        flex-direction: column;
+        align-items: center;
+    }
+    .conteneur{
+        flex-direction: column;
+    }
 }
