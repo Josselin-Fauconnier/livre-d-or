@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="" >
                 <div class="formulaire-groupe">
                     <label for="commentaire">Votre commentaire :</label>
-                    <textarea id="commentaire" name="commentaire" rows="5" placeholder="Poster ici un commentaire pertinent"required><?php echo htmlspecialchars($_POST['commentaire'] ?? ''); ?></textarea>
+                    <textarea id="commentaire" name="commentaire" rows="5" placeholder="Poster ici un commentaire pertinent"><?php echo htmlspecialchars($_POST['commentaire'] ?? ''); ?></textarea>
                 </div>
                 
                 <button type="submit" class="bouton_ins">Publier le commentaire</button>
