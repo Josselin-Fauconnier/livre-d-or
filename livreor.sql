@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.2
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:3306
--- Généré le : jeu. 07 août 2025 à 14:25
--- Version du serveur : 5.7.24
--- Version de PHP : 8.3.1
+-- Hôte : localhost
+-- Généré le : mer. 24 sep. 2025 à 07:51
+-- Version du serveur : 8.4.3
+-- Version de PHP : 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `commentaires` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `commentaire` text NOT NULL,
-  `id_utilisateur` int(11) NOT NULL,
+  `id_utilisateur` int NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -41,42 +41,10 @@ CREATE TABLE `commentaires` (
 --
 
 CREATE TABLE `utilisateurs` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `commentaires`
---
-ALTER TABLE `commentaires`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `commentaires`
---
-ALTER TABLE `commentaires`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

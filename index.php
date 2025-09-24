@@ -21,6 +21,7 @@ $format_date= new DateTime();
 <head>
     <meta charset="UTF-8">
     <title>Présentation du livre d'or</title>
+    <meta name="description" content="Présentation du livre d'or concernant les projets  sur github de Josselin Fauconnier" />
     <link rel="stylesheet" href="style_or.css">
 </head>
 <body>
@@ -35,7 +36,7 @@ $format_date= new DateTime();
             ?>
     </p>
     <p>
-      <?php  echo "Nous sommes le " .$date_FR->format($format_date)  ?>
+      <?php echo "Nous sommes le " .$date_FR->format($format_date)?>
     </p>
    </div> 
 </header>
@@ -57,7 +58,9 @@ $format_date= new DateTime();
    <div class="conteneur">
         <article class="article_presentation">
             <h1>Présentation du site</h1>
-            <p> Ce site sert à  recueillir divers retour sur les projets posté sur ce <a href="https://github.com/Josselin-Fauconnier">github</a></p>
+            <p> Ce site sert à  recueillir divers retour sur les projets posté sur les repos github ci-dessous </p>
+            <a href="https://github.com/Josselin-Fauconnier" target="_blank" reel="noreferrer">github formation</a> 
+            <a href="https://github.com/Jossnnier" target="_blank" reel="noreferrer">github personnel</a>
         </article>
    </div>
 </main>
