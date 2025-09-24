@@ -55,7 +55,7 @@ $format_date= new DateTime();
             <a href="livre-or.php">Le livre</a>
         <?php endif; ?>
     </nav>
-   <div class="conteneur">
+   <div class="conteneur_centrage_page">
         <article class="article_presentation">
             <h1>Présentation du site</h1>
             <p> Ce site sert à  recueillir divers retour sur les projets posté sur les repos github ci-dessous </p>
