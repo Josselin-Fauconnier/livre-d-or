@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajout d'un commentaire</title>
+    <title>Ajout d'un commentaire sur le livre d'or </title>
     <link rel="stylesheet" href="style_or.css">
 </head>
 <body>
