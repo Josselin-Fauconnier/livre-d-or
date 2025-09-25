@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'id' => $user['id'],
                         'login' => $user['login'],
                     ];  
-                    if (header("Location: index.php"));
+                    header("Location: index.php");
                     exit();
                 } else {
                     $message = "Mot de passe incorrect.";
