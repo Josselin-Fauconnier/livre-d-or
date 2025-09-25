@@ -1,8 +1,6 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 date_default_timezone_set("Europe/Paris");
 
@@ -26,7 +24,7 @@ if (isset($_SESSION['user'])) {
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES, 'utf8mb4');
     $password = trim($_POST['password'] ?? '');
     $confirmPassword = trim($_POST['confirmPassword'] ?? '');
 
@@ -42,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($conn->connect_error) {
             $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
         } else {
-            $conn->set_charset("utf8");
+            $conn->set_charset('utf8mb4');
             
             $stmt = $conn->prepare("SELECT id FROM utilisateurs WHERE login = ?");
             $stmt->bind_param("s", $login);

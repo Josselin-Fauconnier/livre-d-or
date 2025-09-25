@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
 session_start();
 date_default_timezone_set("Europe/Paris");
 
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($conn->connect_error) {
             $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
         } else {
-            $conn->set_charset("utf8");
+            $conn->set_charset('utf8mb4');
             
             if (!empty($nouveau_mot_de_passe)) {
                 $stmt = $conn->prepare("SELECT password FROM utilisateurs WHERE id = ?");

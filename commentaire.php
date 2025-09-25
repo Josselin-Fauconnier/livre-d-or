@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
 session_start();
 date_default_timezone_set("Europe/Paris");
 
@@ -21,7 +22,7 @@ if (!isset($_SESSION['user'])) {
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $commentaire = htmlspecialchars(trim($_POST['commentaire'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $commentaire = htmlspecialchars(trim($_POST['commentaire'] ?? ''), ENT_QUOTES, 'utf8mb4');
     
     if (empty($commentaire)) {
         $message = "Le commentaire ne peut pas être vide.";
@@ -86,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="POST" action="" >
                 <div class="formulaire-groupe">
                     <label for="commentaire">Votre commentaire :</label>
-                    <textarea id="commentaire" name="commentaire" rows="5" placeholder="Poster ici un commentaire pertinent"><?php echo htmlspecialchars($_POST['commentaire'] ?? ''); ?></textarea>
+                    <textarea  id="commentaire" name="commentaire" rows="5" placeholder="Poster ici un commentaire pertinent"><?php echo htmlspecialchars($_POST['commentaire'] ?? ''); ?></textarea>
                 </div>
                 
                 <button type="submit" class="bouton_ins">Publier le commentaire</button>
