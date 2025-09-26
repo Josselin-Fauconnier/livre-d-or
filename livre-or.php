@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
 session_start();
 date_default_timezone_set("Europe/Paris");
 
@@ -28,7 +27,7 @@ $message = "";
 if ($conn->connect_error) {
     $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
 } else {
-    $conn->set_charset("utf8");
+    $conn->set_charset("utf8mb4");
     
     $count_query = "SELECT COUNT(*) as total FROM commentaires";
     $count_result = $conn->query($count_query);
@@ -124,7 +123,7 @@ if ($conn->connect_error) {
                                 ?> par <?php echo htmlspecialchars($commentaire['login']); ?>
                             </div>
                             <div class="texte_commentaire">
-                                <?php echo nl2br(htmlspecialchars($commentaire['commentaire'])); ?>
+                                <?php echo nl2br($commentaire['commentaire']); ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

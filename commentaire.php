@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
 session_start();
 date_default_timezone_set("Europe/Paris");
 
@@ -22,7 +21,13 @@ if (!isset($_SESSION['user'])) {
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $commentaire = htmlspecialchars(trim($_POST['commentaire'] ?? ''), ENT_QUOTES, 'utf8mb4');
+    $commentaire = trim($_POST['commentaire'] ?? '');
+    
+    if (!mb_check_encoding($commentaire, 'UTF-8')) {
+        $commentaire = mb_convert_encoding($commentaire, 'UTF-8', 'auto');
+    }
+    
+    $commentaire = htmlspecialchars($commentaire, ENT_QUOTES, 'UTF-8');
     
     if (empty($commentaire)) {
         $message = "Le commentaire ne peut pas être vide.";
@@ -32,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($conn->connect_error) {
             $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
         } else {
-            $conn->set_charset("utf8");
+            $conn->set_charset("utf8mb4");
             
             $stmt = $conn->prepare("INSERT INTO commentaires (commentaire, id_utilisateur, date) VALUES (?, ?, NOW())");
             $stmt->bind_param("si", $commentaire, $_SESSION['user']['id']);
@@ -55,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajout d'un commentaire sur le livre d'or </title>
+    <title>Ajout d'un commentaire sur le livre d'or</title>
     <link rel="stylesheet" href="style_or.css">
 </head>
 <body>
@@ -84,10 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
             
-            <form method="POST" action="" >
+            <form method="POST" action="" accept-charset="UTF-8">
                 <div class="formulaire-groupe">
                     <label for="commentaire">Votre commentaire :</label>
-                    <textarea  id="commentaire" name="commentaire" rows="5" placeholder="Poster ici un commentaire pertinent"><?php echo htmlspecialchars($_POST['commentaire'] ?? ''); ?></textarea>
+                    <textarea id="commentaire" name="commentaire" rows="5" 
+                              placeholder="Écrivez votre commentaire ici..." 
+                              accept-charset="UTF-8"><?php echo htmlspecialchars($_POST['commentaire'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 
                 <button type="submit" class="bouton_ins">Publier le commentaire</button>
