@@ -69,6 +69,7 @@ p{
 
 
 
+
 /* css for connexion and inscription pages */
 
 .formulaire{
@@ -236,7 +237,7 @@ p{
     border: 3px solid cadetblue;
     border-radius: 4px;
     font-size: 15px;
-    resize: vertical;
+    resize: none;
 }
 
 .formulaire textarea:focus {
@@ -272,12 +273,174 @@ p{
 
 
 
+/* Styles for comment editing in livre-or.php */
+
+.comment_user_actions {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn_edit, .btn_save, .btn_cancel {
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn_edit {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn_edit:hover {
+    background-color: #45a049;
+}
+
+.btn_delete {
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn_delete:hover {
+    background-color: #da190b;
+}
+
+.btn_save {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn_save:hover {
+    background-color: #0056b3;
+}
+
+.btn_cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn_cancel:hover {
+    background-color: #545b62;
+}
+
+.edit_comment_form {
+    margin-top: 10px;
+}
+
+.edit_comment_form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid cadetblue;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.edit_comment_form textarea:focus {
+    outline: none;
+    border-color: teal;
+}
+
+.edit_actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Styles for profile page user comments section */
+
+.profile_section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #E25822;
+}
+
+.user_comments_section {
+    margin-top: 30px;
+}
+
+.user_comments_section h2 {
+    color: #E25822;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.user_comments_section p {
+    text-align: center;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.user_comments_section a {
+    color: teal;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.user_comments_section a:hover {
+    color: #aa25e7;
+}
+
+.user_comment_item {
+    background-color: white;
+    border: 2px solid gold;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment_date {
+    font-size: 14px;
+    color: #E25822;
+    font-weight: bold;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.comment_text {
+    color: #333;
+    line-height: 1.4;
+    padding: 10px 0;
+}
+
+/* Responsive */
 @media(max-width:600px) {
-    #nav-bar{
+    .comment_user_actions {
         flex-direction: column;
-        align-items: center;
+        gap: 5px;
     }
-    .conteneur{
+    
+    .btn_edit, .btn_delete, .btn_save, .btn_cancel {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .edit_actions {
         flex-direction: column;
+    }
+    
+    .user_comment_item {
+        padding: 10px;
     }
 }
+
+
+
+

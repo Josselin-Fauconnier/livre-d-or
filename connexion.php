@@ -2,6 +2,8 @@
 session_start();
 date_default_timezone_get();
 
+require_once 'CSRFprotection.php';
+
 $date_FR= new IntlDateFormatter (
     'fr_FR',
     IntlDateFormatter::FULL,
@@ -22,7 +24,12 @@ if (isset($_SESSION['user'])) {
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES, 'utf8mb4');
+    $token = $_POST['csrf_token'] ?? '';
+    if (!verifyCSRFToken($token)) {
+        http_response_code(403);
+        die('Erreur CSRF. <a href="connexion.php">Retour</a>');
+    }
+    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES, 'UTF-8');
     $password = $_POST['password'] ?? '';
 
     if (empty($login) || empty($password)) {
@@ -114,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST" action="">
+            <?php echo CSRFTokenField(); ?>
             <div class="formulaire-groupe">
                 <label for="login">Login :</label>
                 <input type="text" id="login" name="login" value="<?php echo htmlspecialchars($_POST['login'] ?? ''); ?>" required>

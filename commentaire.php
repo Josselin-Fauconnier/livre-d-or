@@ -2,6 +2,11 @@
 session_start();
 date_default_timezone_set("Europe/Paris");
 
+
+require_once 'CSRFprotection.php';
+
+
+
 $date_FR = new IntlDateFormatter(
     'fr_FR',
     IntlDateFormatter::FULL,
@@ -21,15 +26,22 @@ if (!isset($_SESSION['user'])) {
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $commentaire = trim($_POST['commentaire'] ?? '');
+
+$token = $_POST['csrf_token'] ?? '';
+    if (!verifyCSRFToken($token)) {
+        http_response_code(403);
+        die('Erreur CSRF. <a href="connexion.php">Retour</a>');
+    }
+
+    $comment = trim($_POST['commentaire'] ?? '');
     
-    if (!mb_check_encoding($commentaire, 'UTF-8')) {
-        $commentaire = mb_convert_encoding($commentaire, 'UTF-8', 'auto');
+    if (!mb_check_encoding($comment, 'UTF-8')) {
+        $comment = mb_convert_encoding($comment, 'UTF-8', 'auto');
     }
     
-    $commentaire = htmlspecialchars($commentaire, ENT_QUOTES, 'UTF-8');
+    $comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
     
-    if (empty($commentaire)) {
+    if (empty($comment)) {
         $message = "Le commentaire ne peut pas être vide.";
     } else {
         $conn = new mysqli("localhost", "root", "", "livreor");
@@ -40,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->set_charset("utf8mb4");
             
             $stmt = $conn->prepare("INSERT INTO commentaires (commentaire, id_utilisateur, date) VALUES (?, ?, NOW())");
-            $stmt->bind_param("si", $commentaire, $_SESSION['user']['id']);
+            $stmt->bind_param("si", $comment, $_SESSION['user']['id']);
             
             if ($stmt->execute()) {
                 header("Location: livre-or.php");
@@ -91,6 +103,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <form method="POST" action="" accept-charset="UTF-8">
                 <div class="formulaire-groupe">
+                    <form method="POST" action="">
+            <?php echo CSRFTokenField(); ?>
+    
+    <div class="formulaire-groupe">
+        <label for="login"></label>
                     <label for="commentaire">Votre commentaire :</label>
                     <textarea id="commentaire" name="commentaire" rows="5" 
                               placeholder="Écrivez votre commentaire ici..." 

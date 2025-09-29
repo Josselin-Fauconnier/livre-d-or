@@ -1,6 +1,29 @@
 <?php
 session_start();
 
+require_once 'CSRFprotection.php';
+
+function validatePassword($password){
+    $errors=[];
+
+    if(strlen($password)<12){
+        $errors[]='Le mot de passe doit être composé d\'au moins 12 caractères';
+    }
+    if (!preg_match('/[A-Z]/', $password)) {
+        $errors[] = "Le mot de passe doit avoir au moins une majuscule";
+    }
+    
+    if (!preg_match('/[!@#$%^&_+\-=\[\].<>?]/', $password)) {
+        $errors[] = "Le mot de passe doit avoir au moins un caractère spécial";
+    }
+
+    if(!preg_match('/[0-9]/',$password)){
+        $errors[]="Le mot de passe doit avoir au moins un chiffre";
+    }
+    
+    return $errors;
+}
+
 date_default_timezone_set("Europe/Paris");
 
 $date_FR= new IntlDateFormatter (
@@ -12,18 +35,23 @@ $date_FR= new IntlDateFormatter (
     "EEEE d MMMM y HH:mm"
 );
 
-
 $format_date= new DateTime();
 
 if (isset($_SESSION['user'])) {
-    header("Location:index.php");
+    header("Location: index.php");
     exit();
 }
 
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES,"utf8mb4");
+    $token = $_POST['csrf_token'] ?? '';
+    if (!verifyCSRFToken($token)) {
+        http_response_code(403);
+        die('Erreur CSRF. <a href="connexion.php">Retour</a>');
+    }
+
+    $login = htmlspecialchars(trim($_POST['login'] ?? ''), ENT_QUOTES, "UTF-8");
     $password = trim($_POST['password'] ?? '');
     $confirmPassword = trim($_POST['confirmPassword'] ?? '');
 
@@ -31,46 +59,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "Remplir tous les champs est obligatoire.";
     } elseif ($password !== $confirmPassword) {
         $message = "Les mots de passe ne correspondent pas.";
-    } elseif (strlen($password) < 12) {
-        $message = "Le mot de passe doit contenir au moins 12 caractères."; 
     } else {
-        $conn = new mysqli("localhost", "root", "", "livreor");
-
-        if ($conn->connect_error) {
-            $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
+        $errors_password = validatePassword($password);
+        if(!empty($errors_password)){
+            $message = implode(", ", $errors_password);
         } else {
-            $conn->set_charset("utf8mb4");
-            
-            $stmt = $conn->prepare("SELECT id FROM utilisateurs WHERE login = ?");
-            $stmt->bind_param("s", $login);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            $conn = new mysqli("localhost", "root", "", "livreor");
 
-            if ($result->num_rows > 0) {
-                $message = "Ce login est déjà utilisé.";
+            if ($conn->connect_error) {
+                $message = "Erreur de connexion à la base de données : " . $conn->connect_error;
             } else {
-                $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+                $conn->set_charset("utf8mb4");
+                
+                $stmt = $conn->prepare("SELECT id FROM utilisateurs WHERE login = ?");
+                $stmt->bind_param("s", $login);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-                $stmt = $conn->prepare("INSERT INTO utilisateurs (login, password) VALUES (?, ?)");
-                $stmt->bind_param("ss", $login, $hashPassword);
-
-                if ($stmt->execute()) {
-                    header("Location:connexion.php");
-                    exit();
+                if ($result->num_rows > 0) {
+                    $message = "Ce login est déjà utilisé.";
                 } else {
-                    $message = "Erreur lors de l'inscription : " . $stmt->error;
+                    $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                    $stmt = $conn->prepare("INSERT INTO utilisateurs (login, password) VALUES (?, ?)");
+                    $stmt->bind_param("ss", $login, $hashPassword);
+
+                    if ($stmt->execute()) {
+                        header("Location: connexion.php");
+                        exit();
+                    } else {
+                        $message = "Erreur lors de l'inscription : " . $stmt->error;
+                    }
                 }
 
                 $stmt->close();
+                $conn->close();
             }
-
-            $conn->close();
         }
     }
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -118,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST" action="">
+                <?php echo CSRFTokenField(); ?>
                 <div class="formulaire-groupe">
                     <label for="login">Login :</label>
                     <input type="text" id="login" name="login" value="<?php echo htmlspecialchars($_POST['login'] ?? ''); ?>" required>
@@ -126,12 +155,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="formulaire-groupe">
                     <label for="password">Mot de passe :</label>
                     <input type="password" id="password" name="password" required>
-                    <small>Minimum 12 caractères</small>
+                    <small>Minimum 12 caractères. Il faut une majuscule, un caractère spécial et un chiffre</small>
                 </div>
 
                 <div class="formulaire-groupe">
                     <label for="confirmPassword">Confirmation du mot de passe :</label>
-                    <input type="password" id="confirmPasseword" name="confirmPassword" required>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
 
                 <button type="submit" class="bouton_ins">S'inscrire</button>
