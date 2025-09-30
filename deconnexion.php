@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once "session.php";
+
 
 if (session_status()===PHP_SESSION_ACTIVE){
     $_SESSION=array();

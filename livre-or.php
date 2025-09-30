@@ -1,8 +1,8 @@
 <?php
-session_start();
-date_default_timezone_set("Europe/Paris");
-
+require_once "session.php";
 require_once 'CSRFprotection.php';
+
+date_default_timezone_set("Europe/Paris");
 
 $date_FR = new IntlDateFormatter(
     'fr_FR',
