@@ -114,6 +114,7 @@ $token = $_POST['csrf_token'] ?? '';
                 </div>
                 
                 <button type="submit" class="bouton_ins">Publier le commentaire</button>
+            
             </form>
             
             <div class="retour_livre">
